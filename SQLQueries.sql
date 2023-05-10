@@ -1,35 +1,50 @@
-/*1*/
+---------------------------------------<< SELECT >>---------------------------------------
+/*Display the Department id, name and id and the name of its manager.*/
 SELECT d.dnum, d.dname, d.MGRSSN, e.Fname
 FROM Departments d, Employee e
 WHERE d.MGRSSN = e.SSN
 
-/*2*/
+
+/***************************************************/
+/*Display the name of the departments and the name of the projects under its control.*/
 SELECT d.dname, p.Pname
 FROM Departments d, Project p
 WHERE d.Dnum = p.Dnum
 
-/*3*/
+
+/***************************************************/
+/*Display the full data about all the dependence 
+associated with the name of the employee they depend on him/her.*/
 SELECT d.Dependent_name, d.Sex, d.Bdate, e.Fname
 FROM Dependent d, Employee e
 WHERE d.ESSN = e.SSN
 
-/*4*/
+
+/***************************************************/
+/*Display the Id, name and location of the projects in Cairo or Alex city.*/
 SELECT p.Pnumber, p.Pname, p.Plocation 
 FROM Project p
 WHERE p.Plocation like '%Cairo%' or p.Plocation like '%Alex%'
 /* or WHERE City = 'Cairo' OR City = 'Alex' */
 
-/*5*/
+
+/***************************************************/
+/*Display the Projects full data of the projects with a name starts with "a" letter.*/
 SELECT *
 FROM Project p
 WHERE p.Pname like 'a%'
 
-/*6*/
+
+/***************************************************/
+/*display all the employees in department 30 whose salary from 1000 to 2000 LE monthly*/
 SELECT e.Fname
 FROM Employee e
 WHERE e.Dno = 30 and e.Salary between 1000 and 2000
 
-/*7*/
+
+/***************************************************/
+/*Retrieve the names of all employees in department 10 who works more than 
+or equal10 hours per week on "AL Rabwah" project.*/
 SELECT e.Fname
 FROM Employee e
 JOIN works_for w
@@ -38,7 +53,9 @@ JOIN Project p
 ON w.Pno = p.Pnumber
 WHERE e.Dno = 10 and w.Hours >= 10 and p.Pname = 'AL Rabwah'
 
-/*8*/
+
+/***************************************************/
+/*Find the names of the employees who directly supervised with Kamel Mohamed.*/
 SELECT e.Fname, s.Fname
 FROM Employee e 
 JOIN Employee s
@@ -50,7 +67,10 @@ From Employee
 WHERE SSN IN (SELECT Superssn FROM Employee WHERE Fname = 'Kamel' AND Lname = 'Mohamed')
 */
 
-/*9*/
+
+/***************************************************/
+/*Retrieve the names of all employees and the names of the projects they are working on, 
+sorted by the project name.*/
 SELECT e.Fname employee, p.Pname project
 FROM Employee e
 JOIN works_for w
@@ -59,7 +79,10 @@ JOIN Project p
 ON w.Pno = p.Pnumber
 order by p.Pname
 
-/*10*/
+
+/***************************************************/
+/*For each project located in Cairo City , find the project number, 
+the controlling department name ,the department manager last name ,address and birthdate.*/
 SELECT p.Pnumber, p.Pname project, d.Dname, e.Lname, e.Address, e.Bdate
 FROM Project p
 JOIN works_for w
@@ -79,7 +102,9 @@ ON E.SSN = D.MGRSSN
 WHERE P.City = 'Cairo'
 */
 
-/*11*/
+
+/***************************************************/
+/*Display All Data of the mangers*/
 SELECT e.Fname, e.Lname, e.Address, e.Bdate, e.Salary, e.Sex, e.SSN
 FROM Employee e, Departments d
 WHERE e.ssn = d.MGRSSN
@@ -90,7 +115,9 @@ FROM Employee
 WHERE SSN IN (SELECT MGRSSN FROM Departments)
 */
 
-/*12*/
+
+/***************************************************/
+/*Display All Employees data and the data of their dependents even if they have no dependents*/
 SELECT *
 FROM Employee e
 FULL OUTER JOIN Dependent de
@@ -103,16 +130,18 @@ ON E.SSN = D.ESSN
 */
 
 
-/***************************/
-/*1*/
+---------------------------------------<< DML >>---------------------------------------
+/*Insert your personal data to the employee table as a new employee 
+in department number 30, SSN = 102672, Superssn = 112233, salary=3000.*/
 INSERT INTO Employee (Dno, SSN, Superssn, Salary) VALUES (30, 102672, 112233, 3000)
 SELECT * FROM Employee
 
-/*2*/
+/*Insert another employee with personal data your friend as new employee in department number 30, 
+SSN = 102660, but don’t enter any value for salary or manager number to him.*/
 INSERT INTO Employee (Dno, SSN) VALUES (30, 102660)
 SELECT * FROM Employee
 
-/*3*/
+/*Upgrade your salary by 20 % of its last value.*/
 UPDATE Employee
 SET Salary = Salary + (Salary*20/100)
 WHERE ssn = 102672
